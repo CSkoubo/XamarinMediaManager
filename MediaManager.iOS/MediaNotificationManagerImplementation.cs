@@ -10,9 +10,9 @@ namespace Plugin.MediaManager
     {
         private readonly IMediaManager _mediaManager;
 
-        private IMediaQueue Queue => _mediaManager.MediaQueue;
+        public IMediaQueue Queue => _mediaManager.MediaQueue;
 
-        private MPNowPlayingInfo NowPlaying
+        public MPNowPlayingInfo NowPlaying
         {
             set { MPNowPlayingInfoCenter.DefaultCenter.NowPlaying = value; }
         }
@@ -55,7 +55,7 @@ namespace Plugin.MediaManager
             }
         }
 
-        private MPNowPlayingInfo CreateNowPlayingInfo(IMediaFile mediaFile)
+        public virtual MPNowPlayingInfo CreateNowPlayingInfo(IMediaFile mediaFile)
         {
             var metadata = mediaFile.Metadata;
 
@@ -88,12 +88,12 @@ namespace Plugin.MediaManager
 
             if (metadata.AlbumArt != null)
             {
-                var cover = metadata.AlbumArt as UIImage;
-                if (cover != null)
+                if (metadata.AlbumArt is UIImage cover)
                 {
                     nowPlayingInfo.Artwork = new MPMediaItemArtwork(cover);
                 }
             }
+
             if (!string.IsNullOrEmpty(metadata.AlbumArtUri))
             {
                 var cover = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(metadata.AlbumArtUri)));

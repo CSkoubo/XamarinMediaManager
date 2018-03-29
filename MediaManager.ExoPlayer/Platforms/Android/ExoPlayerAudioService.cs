@@ -77,7 +77,7 @@ namespace Plugin.MediaManager.ExoPlayer
         {
             var mainHandler = new Handler();
             var trackSelector = new DefaultTrackSelector(mainHandler);
-            trackSelector.AddListener(this);
+            //trackSelector.AddListener(this);
             var loadControl = new DefaultLoadControl();
             if (_mediaPlayer == null)
             {

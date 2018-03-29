@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -14,7 +14,6 @@ using Plugin.MediaManager.MediaSession;
 
 namespace Plugin.MediaManager
 {
-
     using Android.OS;
 
     using Java.Util.Concurrent;
@@ -34,7 +33,7 @@ namespace Plugin.MediaManager
         private MediaServiceConnection<TService> mediaPlayerServiceConnection;
         private Intent mediaPlayerServiceIntent;
         private MediaSessionManager _sessionManager;
-
+        private IAndroidMediaNotificationManager _notificationManager => _sessionManager.NotificationManager as IAndroidMediaNotificationManager;
         private IScheduledExecutorService _executorService = Executors.NewSingleThreadScheduledExecutor();
         private IScheduledFuture _scheduledFuture;
 
@@ -120,6 +119,7 @@ namespace Plugin.MediaManager
         {
             await BinderReady();
             await GetMediaPlayerService().Play(mediaFile);
+            GetMediaPlayerService().StartForeground(_notificationManager.NotificationId, _notificationManager.Notification);
         }
 
         public virtual async Task Seek(TimeSpan position)

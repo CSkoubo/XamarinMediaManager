@@ -231,7 +231,7 @@ namespace Plugin.MediaManager.ExoPlayer
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
             HandleIntent(intent);
-            return base.OnStartCommand(intent, flags, startId);
+			return StartCommandResult.NotSticky;
         }
 
         private void OnStatusChangedHandler(StatusChangedEventArgs args)

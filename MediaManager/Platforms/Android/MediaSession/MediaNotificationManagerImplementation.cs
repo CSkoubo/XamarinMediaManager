@@ -16,7 +16,8 @@ namespace Plugin.MediaManager
         // private MediaSessionManagerImplementation _sessionHandler;
         public IMediaQueue MediaQueue { get; set; }
         public MediaSessionCompat.Token SessionToken { get; set; }
-        internal const int _notificationId = 1;
+        public Notification Notification => _builder.Build();
+        public int NotificationId => 1;
 
         private Intent _intent;
 
@@ -73,15 +74,15 @@ namespace Plugin.MediaManager
                 ((NotificationCompat.MediaStyle)(_builder.MStyle)).SetShowActionsInCompactView(0, 1);
             if (_builder.MActions.Count == 1)
                 ((NotificationCompat.MediaStyle)(_builder.MStyle)).SetShowActionsInCompactView(0);
-
+            
             NotificationManagerCompat.From(_applicationContext)
-                .Notify(_notificationId, _builder.Build());
+                .Notify(NotificationId, _builder.Build());
         }
 
         public void StopNotifications()
         {
             NotificationManagerCompat nm = NotificationManagerCompat.From(_applicationContext);
-            nm.Cancel(_notificationId);
+            nm.Cancel(NotificationId);
         }
 
         public void UpdateNotifications(IMediaFile mediaFile, MediaPlayerStatus status)
@@ -96,7 +97,7 @@ namespace Plugin.MediaManager
                     SetMetadata(mediaFile);
                     AddActionButtons(isPlaying);
                     _builder.SetOngoing(isPersistent);
-                    nm.Notify(_notificationId, _builder.Build());
+                    nm.Notify(NotificationId, _builder.Build());
                 }
                 else
                 {
